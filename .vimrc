@@ -1,275 +1,237 @@
-set nocompatible
-filetype off
+" Jump to the last position when reopening a file
+" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-let g:mapleader="\<Space>"
-let g:maplocalleader="\<Space>"
 
-call plug#begin()
+" Go support
+let go_highlight_trailing_whitespace_error=0
 
-"Navigation Plugins
-Plug 'rbgrouleff/bclose.vim'
-Plug 'dbakker/vim-projectroot'
-Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar'
+" Don't indent "public:", "case X:", or return type declarations
+set cinoptions=g0:0t0
 
-"UI Plugins
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bling/vim-bufferline'
-Plug 'altercation/vim-colors-solarized'
+let b:surround_indent = 1
+silent! call pathogen#infect()
 
-"Editor plugins
-Plug 'Raimondi/delimitMate'
-Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-sleuth'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --rust-completer --ts-completer' }
-Plug 'rdnetto/ycm-generator', { 'branch': 'stable' }
-"Plug 'SirVer/ultisnips'
-"Plug 'ludovicchabant/vim-gutentags'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'editorconfig/editorconfig-vim'
-
-"Language specific
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-Plug 'lervag/vimtex', { 'for': 'tex' }
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'tikhomirov/vim-glsl'
-Plug 'vhdirk/vim-cmake'
-Plug 'ds26gte/scmindent'
-Plug 'udalov/kotlin-vim'
-
-if isdirectory("~/dev/mitscript-syntax")
-  Plug '~/dev/mitscript-syntax'
-endif
-
-"Note taking
-Plug 'vimwiki/vimwiki'
-Plug 'lukaszkorecki/workflowish'
-
-call plug#end()
-
-set rtp^=/usr/share/vim/vimfiles
-
-syntax on
+" Load indentation rules and plugins according to filetype.
 filetype plugin indent on
 
-autocmd BufRead,BufNewFile *.sage,*.pyx,*.spyx set filetype=python
+" Probably the most controversial part: remap jk, kj to escape. Requires a
+" short timeoutlen to avoid jkj resulting in <esc>j, among other problems.
+inoremap jk <Esc>
+inoremap kj <Esc>
+set timeoutlen=200
 
-set backspace=indent,eol,start
-set softtabstop=4
-set shiftwidth=4
-set tabstop=4
-set expandtab
-set number
-set ruler
-set showcmd
-set errorformat^=%-GIn\ file\ included\ %.%#
-set foldmethod=syntax
-set conceallevel=2
-set list lcs=tab:»\ ,trail:␣,extends:▶,precedes:◀
+" Optionally:
+" set nu expandtab
 
-set undofile
-
-set cindent cinoptions=N-s,g0,j1
-
-set splitright splitbelow
-
-set ignorecase smartcase
-nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
-nnoremap # ?\<<C-R>=expand('<cword>')<CR>\><CR>
-
-" Map <CR> to :nohl, except in quickfix windows
-nnoremap <silent> <expr> <CR> &buftype ==# 'quickfix' ? "\<CR>" : ":nohl\<CR>"
-
-" Necessary for terminal buffers not to die
-"set hidden
-autocmd TermOpen * set bufhidden=hide
-
-set title
-
+" Joining comments
+set formatoptions+=j
 set nojoinspaces
+
+" Don't continue comments over several lines.
+au BufRead,BufNewFile * setlocal formatoptions-=o | setlocal formatoptions-=r
+
+function! s:ValaSettings()
+  setfiletype java
+  setlocal efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m
+  setlocal syntax=vala
+endfunction
+au BufRead,BufNewFile *.vala call s:ValaSettings()
+au BufRead,BufNewFile *.vapi call s:ValaSettings()
+au BufRead,BufNewFile *.as set syntax=javascript cindent
+au BufRead,BufNewFile *.jsm set syntax=javascript cindent
+au BufRead,BufNewFile *.mxml set filetype=xml
+au BufRead,BufNewFile *.md set filetype=markdown
+au BufRead,BufNewFile *.scala setlocal et sw=2 ts=2 sts=2
+au BufRead,BufNewFile *.tex setlocal et sw=2 ts=2 sts=2
+au BufRead,BufNewFile *.hs setlocal et
+
+" Highlight en spaces, em spaces, non-breaking spaces and soft hyphens with
+" a strong red color.
+au BufNewFile,BufReadPost * match ExtraWhitespace /\(\%u2002\|\%u2003\|\%xa0\|\%xad\)/
+highlight ExtraWhitespace ctermbg=red guibg=red
+highlight clear SignColumn
 
 set mouse=a
 
-set autoread
-autocmd BufEnter,FocusGained * checktime
-
-" Update gutters 200 ms
-set updatetime=200
-
-cmap w!! w !sudo tee > /dev/null %
-
-let g:python_host_prog = '/usr/bin/python2'
-let g:python3_host_prog = '/usr/bin/python3'
-
-let g:ycm_global_ycm_extra_conf = '~/.config/nvim/ycm_global_extra_conf.py'
-let g:ycm_autoclose_preview_window_after_insertion = 1
-
-let delimitMate_expand_cr = 1
-autocmd FileType tex let b:delimitMate_autoclose = 0
-
-let g:bufferline_rotate=1
-let g:bufferline_fixed_index=-1
-let g:bufferline_echo = 0
-
-noremap <silent> <Leader>w :call ToggleWrap()<CR>
-function WrapOn()
-  setlocal wrap linebreak
-  set virtualedit=
-  setlocal display+=lastline
-  noremap  <buffer> <silent> <Up>   g<Up>
-  noremap  <buffer> <silent> <Down> g<Down>
-  noremap  <buffer> <silent> <Home> g<Home>
-  noremap  <buffer> <silent> <End>  g<End>
-  inoremap <buffer> <silent> <Up>   <C-o>gk
-  inoremap <buffer> <silent> <Down> <C-o>gj
-  inoremap <buffer> <silent> <Home> <C-o>g<Home>
-  inoremap <buffer> <silent> <End>  <C-o>g<End>
-endfunction
-function WrapOff()
-  setlocal nowrap
-  set virtualedit=
-  silent! nunmap <buffer> <Up>
-  silent! nunmap <buffer> <Down>
-  silent! nunmap <buffer> <Home>
-  silent! nunmap <buffer> <End>
-  silent! iunmap <buffer> <Up>
-  silent! iunmap <buffer> <Down>
-  silent! iunmap <buffer> <Home>
-  silent! iunmap <buffer> <End>
-endfunction
-function ToggleWrap()
-  if &wrap
-    echo "Wrap OFF"
-    call WrapOff()
-  else
-    echo "Wrap ON"
-    call WrapOn()
-  endif
-endfunction
-call WrapOn()
-
-if $TERM =~ 'rxvt' || $TERM =~'termite'
-  let g:solarized_visibility='low'
-  set background=dark
-  colorscheme solarized
-endif
-
-highlight! link SignColumn LineNr
-
-set spellfile=~/.vim/spell/en.utf-8.add
-
 set laststatus=2
+  
 
-let g:airline_powerline_fonts = 1
+set showcmd         " Show (partial) command in status line.
+set ignorecase      " Do case insensitive matching
+set smartcase       " Do smart case matching
+set wildignorecase  " Ignore case even for file names
+set incsearch       " Incremental search
+set autowrite       " Automatically save before commands like :next and :make
+set autoread        " Reload externally changed files
 
-let g:NERDAltDelims_c = 1
+set modeline
 
-let g:tex_flavor='latex'
-if has('nvim')
-  let g:vimtex_compiler_progname='nvr'
-endif
-if has('nvim') && !has('nvim-0.2')
-  let g:vimtex_quickfix_latexlog = {'fix_paths':0}
-endif
-if executable('zathura')
-  let g:vimtex_view_method='zathura'
-endif
-let g:vimtex_quickfix_open_on_warning=0
+" Use the *correct* charset.
+set encoding=utf-8
 
-" lisp/scheme
-autocmd filetype lisp,scheme setlocal equalprg=$HOME/.config/nvim/plugged/scmindent/scmindent.rkt
+" Set search highlighting
+set hlsearch
 
-set printoptions+=paper:letter
+" <Ctrl-l> also removes any search highlighting.
+nnoremap <silent> <C-l> :nohl<CR><C-l>
+imap <c-l> <c-o><c-l>
 
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-let g:airline#extensions#wordcount#enabled = 1
-let g:airline#extensions#wordcount#filetypes = ['help', 'markdown', 'rst', 'org', 'text', 'asciidoc', 'tex', 'mail']
-let g:airline#extensions#wordcount#filetypes += ['pandoc']
-let g:pandoc#formatting#mode = 'h'
-let g:pandoc#formatting#textwidth = 80
+" Provide some space above/below the current line
+set scrolloff=2
+set sidescrolloff=5
 
-let hostfile= $HOME . '/vimrc-' . hostname()
-if filereadable(hostfile)
-  exe 'source ' . hostfile
-endif
+" Indentation with 4-space tabs per default
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
-autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
-nnoremap <silent> <Leader>n :silent! NERDTreeFind<CR>:NERDTreeFocus<CR>
+" Round indentation to a multiple of 4 with >> and <<
+set shiftround
 
-if has('nvim')
-  " For neovim 0.1.7
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-  " For neovim 0.2
-  "set guicursor=blah
-else
-  if $TERM =~ '^xterm\|rxvt'
-    " Insert mode
-    let &t_SI = "\<Esc>[5 q"
-    " Replace mode
-    if has("patch-7.4-687")
-      let &t_SR = "\<Esc>[3 q"
-    endif
-    " Normal mode
-    let &t_EI = "\<Esc>[2 q"
+" Remove this - it is very annoying at times when the indentation level
+"  gets set to some ridiculous number of spaces.
+" " Automatically find indentation style
+" let g:detectindent_preferred_indent = 4
+" let g:detectindent_max_lines_to_analyse = 256
+" autocmd BufReadPost * :DetectIndent
 
-    " 1 or 0 -> blinking block
-    " 2 -> solid block
-    " 3 -> blinking underscore
-    " 4 -> solid underscore
-    " Recent versions of xterm (282 or above) also support
-    " 5 -> blinking vertical bar
-    " 6 -> solid vertical bar
-  endif
-endif
+" Make tab completion behave kindof like bash
+set wildmenu
+set wildmode=longest:full
 
-if has('nvim')
-  tnoremap <S-Esc> <Esc>
-  tnoremap <Esc> <C-\><C-n>
-  autocmd TermOpen * startinsert
-  au FileType fzf tnoremap <buffer> <Esc> <Esc>
-endif
-" Project root
-let g:rootmarkers = ['.projectroot','Makefile','.git','.hg','.svn','.bzr','_darcs','build.xml']
+" Ignore some binary things in completion
+set wildignore=.svn,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.hi
 
-" FZF configs
-let $FZF_DEFAULT_COMMAND = 'rg --files'
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_buffers_jump = 1
-command! FzfProjectFiles execute 'FzfFiles' projectroot#guess()
-nnoremap <silent> <Leader><Space> :FzfProjectFiles<CR>
-nnoremap <silent> <Leader>f :FzfRg<CR>
-nnoremap <silent> <Leader>a :FzfBuffers<CR>
-nnoremap <silent> <Leader>A :FzfWindows<CR>
+" Make it possible to save even with forgotten sudo
+cabbrev w!! w !sudo tee % >/dev/null
 
-nnoremap <silent> <Leader>yy :YcmCompleter GoTo<CR>
-nnoremap <silent> <Leader>yr :YcmCompleter GoToReferences<CR>
-nnoremap <Leader>yd :YcmDiags<CR>
-nnoremap <Leader>yf :YcmCompleter FixIt<CR>
-nnoremap <Leader>y: :YcmCompleter<Space>
+" Nicer highlighting color for matching parens
+highlight MatchParen ctermbg=0
+"highlight MatchParen ctermbg=7 " light background
 
-let g:gutentags_project_root_finder = 'projectroot#guess'
-let g:gutentags_generate_on_missing = 0
-let g:gutentags_generate_on_new = 0
-let g:gutentags_modules = ['ctags', 'cscope']
-let g:gutentags_cache_dir = $HOME . '/.cache/gutentags'
-let g:gutentags_ctags_tagfile = '.vimtags'
-set tags=./.vimtags;,.vimtags,./tags;,tags
+" Automatically change to the containing directory when opening a file
+set autochdir
+if expand("%") != "" | cd %:h | endif " workaround for https://github.com/vim/vim/issues/704, fixed in 7.4.1716
 
-let g:cmake_export_compile_commands = 1
+" Swapfiles/backups are more annoying than helpful
+set nobackup
+set noswapfile
 
-set cscopetag
+nnoremap j gj
+nnoremap k gk
 
-let g:ycm_enable_diagnostic_signs=0
-" Thanks to http://superuser.com/questions/558876/how-can-i-make-the-sign-column-show-up-all-the-time-even-if-no-signs-have-been-a
-"autocmd BufEnter * sign define dummy
-"autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+" <F1> is probably mistyped <Esc>, and is also never used.
+nnoremap <F1> <Esc>
+inoremap <F1> <Esc>
 
-com -range=% -nargs=1 P exe "<line1>,<line2>!".<q-args> | y | sil u | echom @"
-com -range=% Hash <line1>,<line2>P cpp -P -fpreprocessed | tr -d '[:space:]' | md5sum
-au FileType cpp com! -buffer -range=% Hash <line1>,<line2>P cpp -P -fpreprocessed | tr -d '[:space:]' | md5sum
+nnoremap <F2> :Gstatus<cr>
+
+nnoremap <silent> <F3> :make %<<cr>:cw<cr>
+
+" Map ; to :, because : is used more
+noremap ; :
+
+function EnglishLayout()
+  call system('gsettings set org.gnome.desktop.input-sources current 0')
+endfunction
+
+" Swedish, sometimes convenient
+" Å, Ä and å are generally mistakes and continued by other English-
+" language commands; thus, they swap keyboard layout back to English.
+noremap ö :
+noremap Ö :
+noremap ä '
+noremap <silent> Ä :call EnglishLayout()<CR>"
+noremap <silent> Å :call EnglishLayout()<CR>{
+noremap <silent> å :call EnglishLayout()<CR>[
+noremap ¤ $
+noremap ½ ~
+noremap § `
+noremap - /
+noremap! ¤ $
+noremap! ½ ~
+noremap! § `
+
+" For using Swedish keyboard layout as if it were English:
+" :set langmap=å[,ä',ö:,Å{,Ä\",Ö:,¨],^},'\\\\,*\|,\\;<,:>,-/,_?,½~
+"               ,\"@,¤$,&^,/&,(*,)(,=),?_,`+,+-,´=,§`
+" Does unfortunately not work very well with key mapping, and Swedish delayed
+" keys are still there for, for example, } and ~.
+
+" Lower the timeout for prefix keymaps (jkj should be j<esc>, and try to
+" avoid lag for the cursor).
+au InsertEnter * set timeoutlen=100
+au InsertLeave * set timeoutlen=1000
+
+" Don't wait forever to cancel selections.
+set ttimeoutlen=50
+
+" Ctrl-j/k inserts blank line below/above.
+nnoremap <silent><C-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><C-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+" Make replaying simples macros recorded with qq easier
+nnoremap Q @q
+nnoremap <c-q> :let @q = @q . '@q'<cr>@q
+
+nnoremap <C-I> gt
+nnoremap [Z gT
+
+" ... and Ctrl-P for Ctrl-O, because Tab is the same as Ctrl-I...
+nnoremap <c-p> <c-i>
+
+" I make this mistake a lot
+noremap <S-k> k
+
+" paste lines from unnamed register and fix indentation
+noremap <leader>p pV`]=
+noremap <leader>P PV`]=
+
+" paste from yank register
+"noremap yp "0p
+"noremap yP "0P
+
+" let mapleader = ","
+
+nnoremap <leader>q :q<cr>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+nnoremap <leader>d :set bg=dark<cr>
+nnoremap <leader>f :set bg=light<cr>
+
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-k> <c-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<cr>
+
+" & highlights the word under the cursor
+noremap <silent> & :let @/ = "\\<<c-r><c-w>\\>"<cr>:set hlsearch<cr>
+
+set showbreak=↳\ " (a single space)
+
+" Display incomplete lines instead of a bunch of @
+set display=lastline
+
+" No vim intro
+set shm+=I
+
+" Ignore whitespace with vimdiff
+set diffopt=filler,iwhite
+
+" List the number of substitutions for :s etc. when it's > 1
+set report=1
+
+cabbrev te tabe
+
+" no-brainer limit increases
+set tabpagemax=50
+set undolevels=10000
+
+" Smoother redrawing with no downside, apparently.
+set ttyfast
+
+set nrformats-=octal
+
+set history=1000
+set viminfo+=:1000
