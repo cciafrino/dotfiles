@@ -11,8 +11,6 @@ export ZSH="/home/cciafrino/.oh-my-zsh"
 ZSH_THEME="bureau"
 
 
-alias dotgit='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -136,3 +134,8 @@ function mkcd {
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias dotgit='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+function c() { #simple cpp compilation alias. Usage:c code
+    g++ -O2 -Wall -Wextra -Wno-unused-result -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector -D_FORTIFY_SOURCE=2 -std=c++17 -o $1 $1.cpp
+}
