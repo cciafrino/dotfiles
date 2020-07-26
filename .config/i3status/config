@@ -77,7 +77,7 @@ disk "/var" {
         format = "/var: %avail"
 }
 disk "/home" {
-        format = "/home/cciafrino/: %avail"
+        format = "/home/chris/: %avail"
 }
 memory {
         format = "using %used of %total"
@@ -88,3 +88,4 @@ cpu_temperature 0 {
         format = "T: %degrees °C"
         path = "/sys/devices/platform/coretemp.0/temp1_input"
 }
+

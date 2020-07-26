@@ -1,3 +1,4 @@
+
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
@@ -269,4 +270,4 @@ exec i3-config-wizard
 exec_always --no-startup-id xinput set-prop 17 322 1
 
 # Wallpaper
-exec_always feh --bg-scale /home/cciafrino/Pictures/Wallpapers/paintwallpaper.jpg
+exec_always feh --bg-scale /home/chris/Images/Wallpapers/minimal-sunset-landscape-4k-w5.jpg
