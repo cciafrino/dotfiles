@@ -27,7 +27,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sleuth'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --rust-completer --ts-completer' }
 Plug 'rdnetto/ycm-generator', { 'branch': 'stable' }
-"Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 "Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -173,6 +174,15 @@ endif
 
 highlight! link SignColumn LineNr
 
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-x>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
 set spellfile=~/.vim/spell/en.utf-8.add
 
 set laststatus=2
@@ -276,6 +286,8 @@ set tags=./.vimtags;,.vimtags,./tags;,tags
 let g:cmake_export_compile_commands = 1
 
 set cscopetag
+
+
 
 let g:ycm_enable_diagnostic_signs=0
 " Thanks to http://superuser.com/questions/558876/how-can-i-make-the-sign-column-show-up-all-the-time-even-if-no-signs-have-been-a
