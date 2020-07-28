@@ -213,6 +213,9 @@ mode "control" {
 }
 bindsym Mod1+Escape mode "control"
 
+#lock screen
+bindsym Mod1+g exec --no-startup-id i3lock -c 000000 && xset dpms force off
+
 # solarized accents
 set $yellow #b58900
 set $orange #cb4b16
@@ -268,6 +271,9 @@ exec i3-config-wizard
 
 # Touchpad
 exec_always --no-startup-id xinput set-prop 17 322 1
+
+exec_always xinput -disable 15
+exec_always xbindkeys
 
 # Wallpaper
 exec_always feh --bg-scale /home/chris/Images/Wallpapers/minimal-sunset-landscape-4k-w5.jpg
