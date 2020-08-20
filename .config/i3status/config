@@ -77,10 +77,10 @@ disk "/var" {
         format = "/var: %avail"
 }
 disk "/home" {
-        format = "/home/chris/: %avail"
+        format = "/home: %avail"
 }
 memory {
-        format = "using %used of %total"
+        format = "%used of %total"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }

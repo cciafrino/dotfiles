@@ -3,7 +3,7 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/chris/.oh-my-zsh"
-
+export PATH="/usr/lib/jvm/java-14-openjdk/bin/:$PATH"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -123,8 +123,11 @@ function mkcd {
 #   export EDITOR='mvim'
 # fi
 
+# Preferred editor for local and remote sessions
+export EDITOR='nvim'
+
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh

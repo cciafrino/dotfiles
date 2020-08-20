@@ -1,16 +1,12 @@
-2020/07/27-13:44:59.759 2c43 Reusing MANIFEST leveldb/MANIFEST-000001
-2020/07/27-14:30:59.761 2c43 Level-0 table #5: started
-2020/07/27-14:30:59.768 2c43 Level-0 table #5: 13843 bytes OK
-2020/07/27-14:30:59.771 2c43 Delete type=0 #3
-2020/07/27-15:31:59.761 3771 Level-0 table #7: started
-2020/07/27-15:31:59.768 3771 Level-0 table #7: 11052 bytes OK
-2020/07/27-15:31:59.771 3771 Delete type=0 #4
-2020/07/27-16:32:59.761 468f Level-0 table #9: started
-2020/07/27-16:32:59.768 468f Level-0 table #9: 10285 bytes OK
-2020/07/27-16:32:59.770 468f Delete type=0 #6
-2020/07/27-17:33:59.762 5160 Level-0 table #11: started
-2020/07/27-17:33:59.767 5160 Level-0 table #11: 10233 bytes OK
-2020/07/27-17:33:59.769 5160 Delete type=0 #8
-2020/07/27-18:34:59.762 5160 Level-0 table #13: started
-2020/07/27-18:34:59.768 5160 Level-0 table #13: 10432 bytes OK
-2020/07/27-18:34:59.771 5160 Delete type=0 #10
+2020/08/18-17:19:21.485 3271 Reusing MANIFEST leveldb/MANIFEST-000001
+2020/08/18-17:19:21.486 3271 Recovering log #65
+2020/08/18-17:19:21.487 3271 Reusing old log leveldb/000065.log 
+2020/08/18-17:29:28.637 3272 Level-0 table #70: started
+2020/08/18-17:29:28.645 3272 Level-0 table #70: 11399 bytes OK
+2020/08/18-17:29:28.648 3272 Delete type=0 #65
+2020/08/18-18:28:21.490 3465 Level-0 table #72: started
+2020/08/18-18:28:21.496 3465 Level-0 table #72: 9781 bytes OK
+2020/08/18-18:28:21.500 3465 Delete type=0 #69
+2020/08/18-19:29:21.490 37ee Level-0 table #74: started
+2020/08/18-19:29:21.495 37ee Level-0 table #74: 9690 bytes OK
+2020/08/18-19:29:21.497 37ee Delete type=0 #71

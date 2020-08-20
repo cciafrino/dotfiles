@@ -1,2 +1,7 @@
 [Added Associations]
-application/pdf=org.gnome.Evince.desktop;
+application/pdf=org.gnome.Evince.desktop;firefox.desktop;
+application/x-java=nvim.desktop;
+text/x-c++src=vim.desktop;neovim.desktop;nvim.desktop;
+
+[Default Applications]
+text/x-c++src=neovim.desktop
