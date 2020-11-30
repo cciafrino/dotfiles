@@ -25,7 +25,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sleuth'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer --go-completer --rust-completer --ts-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --go-completer --rust-completer --ts-completer' }
 Plug 'rdnetto/ycm-generator', { 'branch': 'stable' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -286,7 +286,6 @@ set tags=./.vimtags;,.vimtags,./tags;,tags
 let g:cmake_export_compile_commands = 1
 
 set cscopetag
-
 
 
 let g:ycm_enable_diagnostic_signs=0
