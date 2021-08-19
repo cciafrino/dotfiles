@@ -1,1 +1,2 @@
 export TERMINAL=termite
+export PATH="$PATH:$HOME/AUR/ideaIU-2021.1.2/idea-IU-211.7442.40/bin"
