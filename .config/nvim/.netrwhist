@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/home/chris'
+let g:netrw_dirhist_1='/home/chris/Documents/ACM-ICPC-master/Codeforces/102452'
+let g:netrw_dirhist_0='/home/chris/ICPC-Notebook/content/graph'
+let g:netrw_dirhist_9='/home/chris/ICPC-Notebook/content'
+let g:netrw_dirhist_8='/home/chris'
+let g:netrw_dirhist_7='/home/chris/ICPC-Notebook'
+let g:netrw_dirhist_6='/home/chris'
+let g:netrw_dirhist_5='/home/chris/ICPC-Notebook/content/combinatorial'
+let g:netrw_dirhist_4='/home/chris/ICPC-Notebook/content'
+let g:netrw_dirhist_3='/home/chris/ICPC-Notebook'

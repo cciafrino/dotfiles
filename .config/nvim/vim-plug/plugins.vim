@@ -12,6 +12,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 Plug 'rbgrouleff/bclose.vim'
 Plug 'dbakker/vim-projectroot'
 Plug 'scrooloose/nerdtree'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 
@@ -33,6 +34,8 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'JuliaEditorSupport/julia-vim'
 
 "Language specific
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
@@ -118,7 +121,7 @@ cmap w!! w !sudo tee > /dev/null %
 
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
-
+let g:ycm_python_binary_path = 'python'
 let g:ycm_global_ycm_extra_conf = '~/.config/nvim/ycm_global_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
