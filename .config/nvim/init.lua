@@ -161,8 +161,10 @@ vim.api.nvim_set_keymap("n", "<Leader>f", "<Cmd>FzfRg<CR>", { silent=true, norem
 }
 
 treesitter.setup {
-    ensure_installed = 'maintained',
+    ensure_installed = {"c", "cpp", "python", "go"},
     highlight = { enable = true },
+    sync_install = false,
+    ignore_install = { "beancount" }
     -- indent = { enable = true },
 }
 
@@ -272,14 +274,14 @@ local lsp_on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<Leader>lq', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap('n', '<Leader>lw', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   end
-  if client.resolved_capabilities.document_range_formatting then
+  if client.server_capabilities.document_range_formatting then
     buf_set_keymap('v', '<Leader>lw', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
   end
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.cmd [[
     augroup lsp_document_highlight
     autocmd! * <buffer>
@@ -294,11 +296,11 @@ vim.cmd [[highlight LspReferenceText cterm=bold guibg=LightYellow]]
 vim.cmd [[highlight LspReferenceRead cterm=bold ctermbg=0 guibg=LightYellow]]
 vim.cmd [[highlight LspReferenceWrite cterm=bold ctermbg=0 guibg=LightYellow]]
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.offsetEncoding = { "utf-16" }
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "tsserver", "pyright", "rust_analyzer", "gopls"}
+local servers = { "clangd", "tsserver", "pyright", "gopls"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = lsp_on_attach,
