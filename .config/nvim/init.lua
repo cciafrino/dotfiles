@@ -134,14 +134,18 @@ vim.g.bufferline_rotate = 1
 vim.g.bufferline_fixed_index = -1
 vim.g.bufferline_echo = 0
 
+--- Disable codeium by default (due to ICPC practice until WF finally comes)
+vim.g.codeium_enabled = 0
+
 if vim.env.TERM == 'rxvt' or vim.env.TERM == 'termite' or vim.env.TERM == 'alacritty' or vim.env.TERM == 'xterm-kitty' then
   vim.g.solarized_visibility = 'low'
   vim.opt.background = 'dark'
   vim.cmd [[colorscheme solarized]]
 end
 
+
 vim.cmd [[highlight! link SignColumn LineNr]]
-vim.cmd [[highlight NonText ctermfg=10 cterm=NONE]]
+vim.cmd [[highlight NonText ctermfg=10 cterm=none]]
 
 vim.opt.spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
 
@@ -178,7 +182,7 @@ local treesitter_parser_configs = require('nvim-treesitter.parsers').get_parser_
 treesitter.setup {
     ensure_installed = 'all',
     highlight = { enable = true, additional_vim_regex_highlighting = true },
-    --indent = { enable = true },
+    -- indent = { enable = true },
 }
 
 --vim.opt.foldmethod = 'expr'
@@ -353,7 +357,7 @@ vim.g.vimtex_compiler_progname = 'nvr'
 vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_open_on_warning = 0
 
-vim.opt.printoptions:append{ paper = 'letter' }
+-- vim.opt.printoptions:append{ paper = 'letter' }
 
 vim.cmd [[autocmd BufNewFile,BufReadPost *.sol set filetype=solidity]]
 
